@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, TypeVar, Generic, Union, NamedTuple
+from typing import Callable, TypeVar, Generic, Union, Tuple
 
 T1 = TypeVar('T1')
 T2 = TypeVar('T2')
@@ -40,68 +40,89 @@ Sum5 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5]]
 Sum6 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5], F6[T6]]
 Sum7 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5], F6[T6], F7[T7]]
 
-class Fold2(ABC, Generic[T1, T2, Out]):
-  @abstractmethod
-  def f1(self, f: T1) -> Out: pass
-  @abstractmethod
-  def f2(self, f: T2) -> Out: pass
+def fold2(d: Sum2[T1, T2], 
+          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out]]) -> Out: 
+  if isinstance(d, F1): 
+    return fold[0](d.run)
+  elif isinstance(d, F2): 
+    return fold[1](d.run)
+  else: assert False
 
-  def __call__(self, d: Sum2[T1, T2]) -> Out:
-    if isinstance(d, F1): 
-      return self.f1(d.run)
-    elif isinstance(d, F2): 
-      return self.f2(d.run)
-    else: assert False
+def fold3(d: Sum3[T1, T2, T3],
+          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+                      Callable[[T3], Out]]) -> Out: 
+  if isinstance(d, F1): 
+    return fold[0](d.run)
+  elif isinstance(d, F2): 
+    return fold[1](d.run)
+  elif isinstance(d, F3): 
+    return fold[2](d.run)
+  else: assert False
 
-class Fold3(Fold2[T1, T2, Out], Generic[T1, T2, T3, Out]):
-  @abstractmethod
-  def f3(self, f: T3) -> Out: pass
+def fold4(d: Sum4[T1, T2, T3, T4],
+          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+                      Callable[[T3], Out], Callable[[T4], Out]]) -> Out: 
+  if isinstance(d, F1): 
+    return fold[0](d.run)
+  elif isinstance(d, F2): 
+    return fold[1](d.run)
+  elif isinstance(d, F3): 
+    return fold[2](d.run)
+  elif isinstance(d, F4): 
+    return fold[3](d.run)
+  else: assert False
 
-  def __call__(self, d: Sum3[T1, T2, T3]) -> Out:
-    if isinstance(d, F3): 
-      return self.f3(d.run)
-    else: 
-      return super().__call__(d)
+def fold5(d: Sum5[T1, T2, T3, T4, T5],
+          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+                      Callable[[T3], Out], Callable[[T4], Out],
+                      Callable[[T5], Out]]) -> Out: 
+  if isinstance(d, F1): 
+    return fold[0](d.run)
+  elif isinstance(d, F2): 
+    return fold[1](d.run)
+  elif isinstance(d, F3): 
+    return fold[2](d.run)
+  elif isinstance(d, F4): 
+    return fold[3](d.run)
+  elif isinstance(d, F5): 
+    return fold[4](d.run)
+  else: assert False
 
-class Fold4(Fold3[T1, T2, T3, Out], Generic[T1, T2, T3, T4, Out]):
-  @abstractmethod
-  def f4(self, f: T4) -> Out: pass
+def fold6(d: Sum6[T1, T2, T3, T4, T5, T6],
+          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+                      Callable[[T3], Out], Callable[[T4], Out],
+                      Callable[[T5], Out], Callable[[T6], Out]]) -> Out: 
+  if isinstance(d, F1): 
+    return fold[0](d.run)
+  elif isinstance(d, F2): 
+    return fold[1](d.run)
+  elif isinstance(d, F3): 
+    return fold[2](d.run)
+  elif isinstance(d, F4): 
+    return fold[3](d.run)
+  elif isinstance(d, F5): 
+    return fold[4](d.run)
+  elif isinstance(d, F6): 
+    return fold[5](d.run)
+  else: assert False
 
-  def __call__(self, d: Sum4[T1, T2, T3, T4]) -> Out:
-    if isinstance(d, F4): 
-      return self.f4(d.run)
-    else: 
-      return super().__call__(d)
-
-class Fold5(Fold4[T1, T2, T3, T4, Out], Generic[T1, T2, T3, T4, T5, Out]):
-  @abstractmethod
-  def f5(self, f: T5) -> Out: pass
-
-  def __call__(self, d: Sum5[T1, T2, T3, T4, T5]) -> Out:
-    if isinstance(d, F5): 
-      return self.f5(d.run)
-    else: 
-      return super().__call__(d)
-
-class Fold6(Fold5[T1, T2, T3, T4, T5, Out], 
-            Generic[T1, T2, T3, T4, T5, T6, Out]):
-  @abstractmethod
-  def f6(self, f: T6) -> Out: pass
-
-  def __call__(self, d: Sum6[T1, T2, T3, T4, T5, T6]) -> Out:
-    if isinstance(d, F6): 
-      return self.f6(d.run)
-    else: 
-      return super().__call__(d)
-
-class Fold7(Fold6[T1, T2, T3, T4, T5, T6, Out], 
-            Generic[T1, T2, T3, T4, T5, T6, T7, Out]):
-  @abstractmethod
-  def f7(self, f: T7) -> Out: pass
-
-  def __call__(self, d: Sum7[T1, T2, T3, T4, T5, T6, T7]) -> Out:
-    if isinstance(d, F7): 
-      return self.f7(d.run)
-    else: 
-      return super().__call__(d)
-
+def fold7(d: Sum7[T1, T2, T3, T4, T5, T6, T7],
+          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+                      Callable[[T3], Out], Callable[[T4], Out],
+                      Callable[[T5], Out], Callable[[T6], Out],
+                      Callable[[T7], Out]]) -> Out: 
+  if isinstance(d, F1): 
+    return fold[0](d.run)
+  elif isinstance(d, F2): 
+    return fold[1](d.run)
+  elif isinstance(d, F3): 
+    return fold[2](d.run)
+  elif isinstance(d, F4): 
+    return fold[3](d.run)
+  elif isinstance(d, F5): 
+    return fold[4](d.run)
+  elif isinstance(d, F6): 
+    return fold[5](d.run)
+  elif isinstance(d, F7): 
+    return fold[6](d.run)
+  else: assert False
