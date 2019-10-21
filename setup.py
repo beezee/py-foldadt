@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 setup(
     name="py-foldadt",
-    version="0.1.8",
+    version="0.1.9",
     packages=find_packages(),
     author="beezee",
     description="Zero dependency, mypy friendly algebraic data types",
