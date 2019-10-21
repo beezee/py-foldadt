@@ -55,6 +55,12 @@ def join2(d: Sum2[T1, Sum2[T1, T2]]) -> Sum2[T1, T2]:
   else:
     return F1(d.run)
 
+def bind2(d: Sum2[T1, T2], k: Callable[[T2], Sum2[T1, T3]]) -> Sum2[T1, T3]:
+  if isinstance(d, F2):
+    return k(d.run)
+  else:
+    return d
+
 def fold2(d: Sum2[T1, T2], 
           fold: Tuple[Callable[[T1], Out], Callable[[T2], Out]]) -> Out: 
   if isinstance(d, F1): 
