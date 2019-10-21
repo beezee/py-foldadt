@@ -49,6 +49,12 @@ def append2(d1: Sum2[T1, T2], d2: Sum2[T1, T3]) -> Sum2[T1, Tuple[T2, T3]]:
   else:
     return F1(d1.run)
 
+def join2(d: Sum2[T1, Sum2[T1, T2]]) -> Sum2[T1, T2]:
+  if isinstance(d, F2):
+    return d.run
+  else:
+    return F1(d.run)
+
 def fold2(d: Sum2[T1, T2], 
           fold: Tuple[Callable[[T1], Out], Callable[[T2], Out]]) -> Out: 
   if isinstance(d, F1): 
