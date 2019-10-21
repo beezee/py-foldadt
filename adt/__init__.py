@@ -40,6 +40,15 @@ Sum5 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5]]
 Sum6 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5], F6[T6]]
 Sum7 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5], F6[T6], F7[T7]]
 
+def append2(d1: Sum2[T1, T2], d2: Sum2[T1, T3]) -> Sum2[T1, Tuple[T2, T3]]:
+  if isinstance(d1, F2):
+    if isinstance(d2, F2):
+      return F2((d1.run, d2.run))
+    else:
+      return F1(d2.run)
+  else:
+    return F1(d1.run)
+
 def fold2(d: Sum2[T1, T2], 
           fold: Tuple[Callable[[T1], Out], Callable[[T2], Out]]) -> Out: 
   if isinstance(d, F1): 
