@@ -77,89 +77,107 @@ def lift2(t: Type[T1], f: Callable[[T2], T3]) -> Callable[[Sum2[T1, T2]], Sum2[T
       return map2(d, f)
     return x
 
-def fold2(d: Sum2[T1, T2], 
-          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out]]) -> Out: 
-  if isinstance(d, F1): 
-    return fold[0](d.run)
-  elif isinstance(d, F2): 
-    return fold[1](d.run)
-  else: assert False
+@dataclass
+class fold2(Generic[T1, T2, Out]):
+  fold: Tuple[Callable[[T1], Out], Callable[[T2], Out]]
 
-def fold3(d: Sum3[T1, T2, T3],
-          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
-                      Callable[[T3], Out]]) -> Out: 
-  if isinstance(d, F1): 
-    return fold[0](d.run)
-  elif isinstance(d, F2): 
-    return fold[1](d.run)
-  elif isinstance(d, F3): 
-    return fold[2](d.run)
-  else: assert False
+  def __call__(self, d: Sum2[T1, T2]) -> Out:
+    if isinstance(d, F1): 
+      return self.fold[0](d.run)
+    elif isinstance(d, F2): 
+      return self.fold[1](d.run)
+    else: assert False
 
-def fold4(d: Sum4[T1, T2, T3, T4],
-          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
-                      Callable[[T3], Out], Callable[[T4], Out]]) -> Out: 
-  if isinstance(d, F1): 
-    return fold[0](d.run)
-  elif isinstance(d, F2): 
-    return fold[1](d.run)
-  elif isinstance(d, F3): 
-    return fold[2](d.run)
-  elif isinstance(d, F4): 
-    return fold[3](d.run)
-  else: assert False
+@dataclass
+class fold3(Generic[T1, T2, T3, Out]):
+  fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+              Callable[[T3], Out]]
 
-def fold5(d: Sum5[T1, T2, T3, T4, T5],
-          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
-                      Callable[[T3], Out], Callable[[T4], Out],
-                      Callable[[T5], Out]]) -> Out: 
-  if isinstance(d, F1): 
-    return fold[0](d.run)
-  elif isinstance(d, F2): 
-    return fold[1](d.run)
-  elif isinstance(d, F3): 
-    return fold[2](d.run)
-  elif isinstance(d, F4): 
-    return fold[3](d.run)
-  elif isinstance(d, F5): 
-    return fold[4](d.run)
-  else: assert False
+  def __call__(self, d: Sum3[T1, T2, T3]) -> Out:
+    if isinstance(d, F1): 
+      return self.fold[0](d.run)
+    elif isinstance(d, F2): 
+      return self.fold[1](d.run)
+    elif isinstance(d, F3): 
+      return self.fold[2](d.run)
+    else: assert False
 
-def fold6(d: Sum6[T1, T2, T3, T4, T5, T6],
-          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
-                      Callable[[T3], Out], Callable[[T4], Out],
-                      Callable[[T5], Out], Callable[[T6], Out]]) -> Out: 
-  if isinstance(d, F1): 
-    return fold[0](d.run)
-  elif isinstance(d, F2): 
-    return fold[1](d.run)
-  elif isinstance(d, F3): 
-    return fold[2](d.run)
-  elif isinstance(d, F4): 
-    return fold[3](d.run)
-  elif isinstance(d, F5): 
-    return fold[4](d.run)
-  elif isinstance(d, F6): 
-    return fold[5](d.run)
-  else: assert False
+@dataclass
+class fold4(Generic[T1, T2, T3, T4, Out]):
+  fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+                Callable[[T3], Out], Callable[[T4], Out]]
 
-def fold7(d: Sum7[T1, T2, T3, T4, T5, T6, T7],
-          fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
-                      Callable[[T3], Out], Callable[[T4], Out],
-                      Callable[[T5], Out], Callable[[T6], Out],
-                      Callable[[T7], Out]]) -> Out: 
-  if isinstance(d, F1): 
-    return fold[0](d.run)
-  elif isinstance(d, F2): 
-    return fold[1](d.run)
-  elif isinstance(d, F3): 
-    return fold[2](d.run)
-  elif isinstance(d, F4): 
-    return fold[3](d.run)
-  elif isinstance(d, F5): 
-    return fold[4](d.run)
-  elif isinstance(d, F6): 
-    return fold[5](d.run)
-  elif isinstance(d, F7): 
-    return fold[6](d.run)
-  else: assert False
+  def __call__(self, d: Sum4[T1, T2, T3, T4]) -> Out:
+    if isinstance(d, F1): 
+      return self.fold[0](d.run)
+    elif isinstance(d, F2): 
+      return self.fold[1](d.run)
+    elif isinstance(d, F3): 
+      return self.fold[2](d.run)
+    elif isinstance(d, F4): 
+      return self.fold[3](d.run)
+    else: assert False
+
+@dataclass
+class fold5(Generic[T1, T2, T3, T4, T5, Out]):
+  fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+              Callable[[T3], Out], Callable[[T4], Out],
+              Callable[[T5], Out]]
+
+  def __call__(self, d: Sum5[T1, T2, T3, T4, T5]) -> Out:
+    if isinstance(d, F1): 
+      return self.fold[0](d.run)
+    elif isinstance(d, F2): 
+      return self.fold[1](d.run)
+    elif isinstance(d, F3): 
+      return self.fold[2](d.run)
+    elif isinstance(d, F4): 
+      return self.fold[3](d.run)
+    elif isinstance(d, F5): 
+      return self.fold[4](d.run)
+    else: assert False
+
+@dataclass
+class fold6(Generic[T1, T2, T3, T4, T5, T6, Out]):
+  fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+              Callable[[T3], Out], Callable[[T4], Out],
+              Callable[[T5], Out], Callable[[T6], Out]]
+
+  def __call_(self, d: Sum6[T1, T2, T3, T4, T5, T6]) -> Out:
+    if isinstance(d, F1): 
+      return self.fold[0](d.run)
+    elif isinstance(d, F2): 
+      return self.fold[1](d.run)
+    elif isinstance(d, F3): 
+      return self.fold[2](d.run)
+    elif isinstance(d, F4): 
+      return self.fold[3](d.run)
+    elif isinstance(d, F5): 
+      return self.fold[4](d.run)
+    elif isinstance(d, F6): 
+      return self.fold[5](d.run)
+    else: assert False
+
+@dataclass
+class fold7(Generic[T1, T2, T3, T4, T5, T6, T7, Out]):
+  fold: Tuple[Callable[[T1], Out], Callable[[T2], Out],
+              Callable[[T3], Out], Callable[[T4], Out],
+              Callable[[T5], Out], Callable[[T6], Out],
+              Callable[[T7], Out]]
+
+  def __call__(self, d: Sum7[T1, T2, T3, T4, T5, T6, T7]) -> Out:
+    if isinstance(d, F1): 
+      return self.fold[0](d.run)
+    elif isinstance(d, F2): 
+      return self.fold[1](d.run)
+    elif isinstance(d, F3): 
+      return self.fold[2](d.run)
+    elif isinstance(d, F4): 
+      return self.fold[3](d.run)
+    elif isinstance(d, F5): 
+      return self.fold[4](d.run)
+    elif isinstance(d, F6): 
+      return self.fold[5](d.run)
+    elif isinstance(d, F7): 
+      return self.fold[6](d.run)
+    else: assert False
