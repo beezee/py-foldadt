@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from dataclasses import dataclass
-from typing import Callable, TypeVar, Generic, Union, Tuple, Type
+from typing import Callable, TypeVar, Generic, List, Union, Tuple, Type
 
 T1 = TypeVar('T1')
 T2 = TypeVar('T2')
@@ -40,14 +40,36 @@ Sum5 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5]]
 Sum6 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5], F6[T6]]
 Sum7 = Union[F1[T1], F2[T2], F3[T3], F4[T4], F5[T5], F6[T6], F7[T7]]
 
+class Semigroup(Generic[T1], ABC):
+  @abstractmethod
+  def append(self, a1: T1, a2: T1) -> T1: pass
+
+class KeepLeft(Semigroup[T1]):
+  def append(self, a1: T1, a2: T1) -> T1:
+    return a1
+
+class KeepRight(Semigroup[T1]):
+  def append(self, a1: T1, a2: T1) -> T1:
+    return a2
+
+class ListSg(Generic[T1], Semigroup[List[T1]]):
+  def append(self, a1: List[T1], a2: List[T1]) -> List[T1]:
+    return a1 + a2
+
 def append2(d1: Sum2[T1, T2], d2: Sum2[T1, T3]) -> Sum2[T1, Tuple[T2, T3]]:
+  return append2sg(d1, d2, KeepLeft[T1]())
+
+def append2sg(d1: Sum2[T1, T2], d2: Sum2[T1, T3], sg: Semigroup[T1]) -> Sum2[T1, Tuple[T2, T3]]:
   if isinstance(d1, F2):
     if isinstance(d2, F2):
       return F2((d1.run, d2.run))
     else:
       return F1(d2.run)
   else:
-    return F1(d1.run)
+    if isinstance(d2, F1):
+      return F1(sg.append(d1.run, d2.run))
+    else:
+      return F1(d1.run)
 
 def join2(d: Sum2[T1, Sum2[T1, T2]]) -> Sum2[T1, T2]:
   if isinstance(d, F2):
