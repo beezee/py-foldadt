@@ -17,6 +17,21 @@ class Fn(Generic[T1, T2]):
 
   def __call__(self, t1: T1) -> T2:
     return self.c(t1)
+
+class Id(Generic[T1]):
+  def __init__(self) -> None:
+    return None
+  def __call__(self, t1: T1) -> T1:
+    return t1
+
+
+class Compose(Generic[T1, T2, T3]):
+  def __init__(self, c2: Callable[[T2], T3], 
+               c1: Callable[[T1], T2]) -> None:
+    (self.c1, self.c2) = (c1, c2)
+
+  def __call__(self, t1: T1) -> T3:
+    return self.c2(self.c1(t1))
   
 @dataclass
 class F1(Generic[T1]):
