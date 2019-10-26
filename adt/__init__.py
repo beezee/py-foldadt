@@ -11,6 +11,13 @@ T6 = TypeVar('T6')
 T7 = TypeVar('T7')
 Out = TypeVar('Out')
 
+class Fn(Generic[T1, T2]):
+  def __init__(self, c: Callable[[T1], T2]) -> None:
+    self.c = c
+
+  def __call__(self, t1: T1) -> T2:
+    return self.c(t1)
+  
 @dataclass
 class F1(Generic[T1]):
   run: T1
