@@ -78,6 +78,14 @@ class ListSg(Generic[T1], Semigroup[List[T1]]):
   def append(self, a1: List[T1], a2: List[T1]) -> List[T1]:
     return a1 + a2
 
+class SwapSg(Generic[T1], Semigroup[T1]):
+
+  def __init__(self, sg: Semigroup[T1]) -> None:
+    self._sg = sg
+
+  def append(self, a1: T1, a2: T1) -> T1:
+    return self._sg.append(a2, a1)
+
 class ProductSg(Generic[T1, T2], Semigroup[Tuple[T1, T2]]):
   
   def __init__(self, sg1: Semigroup[T1], sg2: Semigroup[T2]) -> None:
